@@ -20,8 +20,8 @@ import processing.core.PApplet;
 /** EarthquakeCityMap
  * An application with an interactive map displaying earthquake data.
  * Author: UC San Diego Intermediate Software Development MOOC team
- * @author Your name here
- * Date: July 17, 2015
+ * @author Yang Chen
+ * Date: Apr 18, 2020
  * */
 public class EarthquakeCityMap extends PApplet {
 	
@@ -142,16 +142,35 @@ public class EarthquakeCityMap extends PApplet {
 		text("Earthquake Key", 50, 75);
 		
 		fill(color(255, 0, 0));
-		ellipse(50, 125, 15, 15);
-		fill(color(255, 255, 0));
-		ellipse(50, 175, 10, 10);
-		fill(color(0, 0, 255));
-		ellipse(50, 225, 5, 5);
+		triangle(50, 120, 50 -5, 120 +10, 50 + 5, 120 + 10);
+		fill(255);
+		ellipse(50, 150, 10, 10);
+		fill(255);
+		rect(45, 170, 10, 10);
 		
 		fill(0, 0, 0);
-		text("5.0+ Magnitude", 75, 125);
-		text("4.0+ Magnitude", 75, 175);
-		text("Below 4.0", 75, 225);
+		text("City Marker", 75, 125);
+		text("Land quake", 75, 150);
+		text("Ocean quake", 75, 175);
+		
+		fill(0);
+		textAlign(LEFT, CENTER);
+		textSize(12);
+		text("Size ~ Magnitude", 50, 200);
+		
+		fill(color(255, 255, 0));
+		ellipse (50, 225, 10 , 10);
+		fill(color(0,0,255));
+		ellipse(50, 250, 10, 10);
+		fill(color(255,0,0));
+		ellipse(50, 275, 10, 10);
+		
+		fill(0, 0, 0);
+		text("Shallow", 75, 225);
+		text("Intermediate", 75, 250);
+		text("Deep", 75, 275);
+		
+		
 	}
 
 	
@@ -170,10 +189,10 @@ public class EarthquakeCityMap extends PApplet {
 		// If isInCountry ever returns true, isLand should return true.
 		for (Marker m : countryMarkers) {
 			// TODO: Finish this method using the helper method isInCountry
-			
+			if(isInCountry(earthquake, m)) {
+				return true;
+			}
 		}
-		
-		
 		// not inside any country
 		return false;
 	}
@@ -197,6 +216,31 @@ public class EarthquakeCityMap extends PApplet {
 		//     	and (2) if it is on land, that its country property matches 
 		//      the name property of the country marker.   If so, increment
 		//      the country's counter.
+		for (Marker cm : countryMarkers) {
+			int earthquakeCounter = 0;
+			for (Marker qm : quakeMarkers) {
+				EarthquakeMarker em = (EarthquakeMarker)qm;
+				if (em.isOnLand()) {
+					String name = (String)cm.getProperty("name");
+					String country   = (String)qm.getProperty("country");
+					if( country.equals(name)){
+						earthquakeCounter++;
+					}
+				}
+			}
+			if (earthquakeCounter > 0) {
+                System.out.println(cm.getStringProperty("name") + ": " + earthquakeCounter);
+            }
+        }
+			int oceanquakeCounter = 0;
+	        for (Marker qm : quakeMarkers){
+	            EarthquakeMarker em2 = (EarthquakeMarker)qm;
+	            if (!em2.isOnLand){
+	            	oceanquakeCounter++;
+	            }
+	        }
+	        System.out.println("OCEAN QUAKES: " + oceanquakeCounter);
+		
 		
 		// Here is some code you will find useful:
 		// 

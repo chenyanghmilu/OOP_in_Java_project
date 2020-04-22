@@ -7,7 +7,7 @@ import processing.core.PGraphics;
 /** Implements a visual marker for earthquakes on an earthquake map
  * 
  * @author UC San Diego Intermediate Software Development MOOC team
- * @author Your name here
+ * @author Yang Chen
  *
  */
 public abstract class EarthquakeMarker extends SimplePointMarker
@@ -68,6 +68,14 @@ public abstract class EarthquakeMarker extends SimplePointMarker
 		drawEarthquake(pg, x, y);
 		
 		// OPTIONAL TODO: draw X over marker if within past day		
+		String age = (String)getStringProperty("age");
+		if (age.equals("Past day") || age.equals("Past hour")) {
+			pg.fill(0, 0, 0);
+			pg.strokeWeight(2);
+			int buffer = 2;
+			pg.line(x-(radius+buffer),y-(radius+buffer),x+(radius+buffer),y+(radius+buffer));
+			pg.line(x-(radius+buffer),y+(radius+buffer),x+(radius+buffer),y-(radius+buffer));
+		}
 		
 		// reset to previous styling
 		pg.popStyle();
@@ -81,8 +89,22 @@ public abstract class EarthquakeMarker extends SimplePointMarker
 	// You might find the getters below helpful.
 	private void colorDetermine(PGraphics pg) {
 		//TODO: Implement this method
-	}
 	
+	float depth = getDepth();
+	int yellow = pg.color(255, 255, 0);
+	int red = pg.color(255, 0, 0);
+	int blue = pg.color(0, 0, 255);
+	if (depth >= THRESHOLD_DEEP) {
+		pg.fill(red);
+	}
+	else if (depth >= THRESHOLD_INTERMEDIATE) {
+        pg.fill(blue); 
+     } 
+	else {
+        pg.fill(yellow); 
+     }
+	
+	}
 	
 	/*
 	 * getters for earthquake properties

@@ -21,8 +21,8 @@ import processing.core.PApplet;
 /** EarthquakeCityMap
  * An application with an interactive map displaying earthquake data.
  * Author: UC San Diego Intermediate Software Development MOOC team
- * @author Your name here
- * Date: July 17, 2015
+ * @author Yang Chen
+ * Date: Apr 21, 2020
  * */
 public class EarthquakeCityMap extends PApplet {
 	
@@ -139,6 +139,10 @@ public class EarthquakeCityMap extends PApplet {
 	// TODO: Add the method:
 	//   private void sortAndPrint(int numToPrint)
 	// and then call that method from setUp
+	
+	public void sortAndPrint(int numToprint) {
+		
+	}
 	
 	/** Event handler that gets called automatically when the 
 	 * mouse moves.

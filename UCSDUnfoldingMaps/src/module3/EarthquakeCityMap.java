@@ -24,8 +24,8 @@ import parsing.ParseFeed;
 /** EarthquakeCityMap
  * An application with an interactive map displaying earthquake data.
  * Author: UC San Diego Intermediate Software Development MOOC team
- * @author Your name here
- * Date: July 17, 2015
+ * @author Yang CHEN
+ * Date: Apr 17, 2020
  * */
 public class EarthquakeCityMap extends PApplet {
 
@@ -77,7 +77,10 @@ public class EarthquakeCityMap extends PApplet {
 	    // to create a new SimplePointMarker for each PointFeature in 
 	    // earthquakes.  Then add each new SimplePointMarker to the 
 	    // List markers (so that it will be added to the map in the line below)
-	    
+	    for (PointFeature f : earthquakes) {
+	    	SimplePointMarker marker = createMarker(f);
+	    	markers.add(marker);
+	    }
 	    
 	    // Add the markers to the map so that they are displayed
 	    map.addMarkers(markers);
@@ -116,7 +119,20 @@ public class EarthquakeCityMap extends PApplet {
 	    // Rather than comparing the magnitude to a number directly, compare 
 	    // the magnitude to these variables (and change their value in the code 
 	    // above if you want to change what you mean by "moderate" and "light")
+	    int blue = color(0, 0, 255);
+	    int red = color(255, 0, 0);
 	    
+	    if (mag >= THRESHOLD_MODERATE) {
+			marker.setColor(red);
+			marker.setRadius(20);
+		} else if (mag < THRESHOLD_MODERATE && mag >= THRESHOLD_LIGHT) {
+			marker.setColor(yellow);
+			marker.setRadius(15);
+		}
+		else {
+			marker.setColor(blue);
+			marker.setRadius(10);
+		}
 	    
 	    // Finally return the marker
 	    return marker;
@@ -134,6 +150,24 @@ public class EarthquakeCityMap extends PApplet {
 	private void addKey() 
 	{	
 		// Remember you can use Processing's graphics methods here
-	
+		fill(255, 250, 240);
+		rect(25, 50, 150, 250);
+		
+		fill(0);
+		textAlign(LEFT, CENTER);
+		textSize(12);
+		text("Earthquake Key", 50, 75);
+		
+		fill(color(255, 0, 0));
+		ellipse(50, 125, 15, 15);
+		fill(color(255, 255, 0));
+		ellipse(50, 175, 10, 10);
+		fill(color(0, 0, 255));
+		ellipse(50, 225, 5, 5);
+		
+		fill(0, 0, 0);
+		text("5.0+ Magnitude", 75, 125);
+		text("4.0+ Magnitude", 75, 175);
+		text("Below 4.0", 75, 225);
 	}
 }

@@ -5,14 +5,17 @@ public class ArrayLocation {
 
 	public ArrayLocation(double[] coords) {
 		this.coords = coords;
+		// TODO Auto-generated constructor stub
 	}
 
 	public static void main(String[] args) {
-		double[] coords = { 5.0, 0.0 };
+		double[] coords = {5.0, 0.0};
 		ArrayLocation accra = new ArrayLocation(coords);
 		coords[0] = 32.9;
 		coords[1] = -117.2;
+		
 		System.out.println(accra.coords[0]);
+		// TODO Auto-generated method stub
 
 	}
 

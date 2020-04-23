@@ -20,8 +20,8 @@ import processing.core.PApplet;
 /** EarthquakeCityMap
  * An application with an interactive map displaying earthquake data.
  * Author: UC San Diego Intermediate Software Development MOOC team
- * @author Your name here
- * Date: July 17, 2015
+ * @author Yang Chen
+ * Date: Apr 20, 2020
  * */
 public class EarthquakeCityMap extends PApplet {
 	
@@ -146,6 +146,18 @@ public class EarthquakeCityMap extends PApplet {
 	private void selectMarkerIfHover(List<Marker> markers)
 	{
 		// TODO: Implement this method
+		if (lastSelected != null){
+        	return;
+        }
+
+        for(Marker m : markers) {
+            CommonMarker marker = (CommonMarker)m;
+            if (marker.isInside(map, mouseX, mouseY)) {  
+            	lastSelected = marker;
+            	lastSelected.setSelected(true);
+                return;
+            }
+        }
 	}
 	
 	/** The event handler for mouse clicks
@@ -159,6 +171,70 @@ public class EarthquakeCityMap extends PApplet {
 		// TODO: Implement this method
 		// Hint: You probably want a helper method or two to keep this code
 		// from getting too long/disorganized
+		if (lastClicked != null){
+			
+			unhideMarkers();
+			lastClicked = null;
+
+		}
+		else{
+			
+			checkEarthquake();
+			if (lastClicked == null){
+				
+				checkCityquake();
+			}
+			
+		}
+	}
+	
+	public void checkEarthquake()
+	{
+		for (Marker m : quakeMarkers){		
+			EarthquakeMarker earth = (EarthquakeMarker)m;
+			if (earth.isHidden() == false && earth.isInside(map, mouseX, mouseY)){
+
+				lastClicked = earth;
+				
+				for (Marker e: quakeMarkers){
+					if (e != lastClicked){
+						e.setHidden(true);
+					}
+				}
+				
+				for (Marker city : cityMarkers){
+					
+					if(city.getDistanceTo(earth.getLocation()) > earth.threatCircle()){
+						city.setHidden(true);
+					}
+				}
+				return;
+			}	
+		}
+	}
+	public void checkCityquake()
+	{
+		for (Marker city: cityMarkers){
+			if( city.isHidden() == false && city.isInside(map, mouseX, mouseY) ){
+				lastClicked = (CommonMarker) city;
+				
+				for (Marker c: cityMarkers){
+					
+					if (c != lastClicked){
+						c.setHidden(true);
+					}
+				}
+				
+				for (Marker earth : quakeMarkers){
+					
+					EarthquakeMarker em = (EarthquakeMarker) earth;
+					if(em.getDistanceTo(city.getLocation()) <= em.threatCircle()){
+						em.setHidden(false);
+					}
+				}
+				return;
+			}		
+		}
 	}
 	
 	
